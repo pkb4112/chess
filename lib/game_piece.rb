@@ -3,13 +3,25 @@ require_relative "game_board"
 class GamePiece
   attr_reader :player_ID, :piece_ID, :moves, :special_moves, :display
 
-  def verify_move(target_square,active_piece,active_square)
+  def verify_move(target_square,active_square)
     #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
   
   end
 
+def is_possible?(target_square,active_square)
+  dif = path_difference(target_square,active_square)
+  self.moves.each_value do |i|
+    i.each do |x|
+      if dif == x 
+        return true
+      end
+    end
+  end
+return false
+end
+
 def path_difference(target_square,active_square)
-  row_dif = target_square[1] - active_square[1]   #positive up
+  row_dif = target_square[1] - active_square[1]   # positive up
   col_dif = target_square[0] - active_square[0]   # positive right
   dif = [col_dif,row_dif]
   return dif
@@ -71,9 +83,9 @@ class Rook < GamePiece
       @display = "\u2656"
       @moves = {
         up: [[+1,0],[+2,0],[+3,0],[+4,0],[+5,0],[+6,0],[+7,0]],
-        #down:
-        #left:
-        #right:
+        down:[[-1,0],[-2,0],[-3,0],[-4,0],[-5,0],[-6,0],[-7,0]],
+        left: [[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[0,-7]],
+        right:[[0,+1],[0,+2],[0,+3],[0,+4],[0,+5],[0,+6],[0,+7]]
         
       }
 
@@ -86,6 +98,10 @@ class Rook < GamePiece
       @display = "\u265C"
 
       @moves = { 
+        up:[[-1,0],[-2,0],[-3,0],[-4,0],[-5,0],[-6,0],[-7,0]],
+        down: [[+1,0],[+2,0],[+3,0],[+4,0],[+5,0],[+6,0],[+7,0]],
+        left: [[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[0,-7]],
+        right:[[0,+1],[0,+2],[0,+3],[0,+4],[0,+5],[0,+6],[0,+7]]
        
       }
 
