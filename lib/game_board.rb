@@ -10,6 +10,7 @@ class GameBoard
     new_game
   end
 
+#Populates the board with game pieces in their starting locations
   def new_game
   
     #Pawns 
@@ -45,9 +46,6 @@ class GameBoard
     #Kings
     @squares[0][4] = King.new(1)
     @squares[7][4] = King.new(2)
-
-
-
   end
 
   def print_board
@@ -60,6 +58,7 @@ class GameBoard
       end
       puts ""
     end
+    puts ""
     print "   a  b  c  d  e  f  g  h"
     puts ""
   end

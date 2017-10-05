@@ -6,9 +6,4 @@ def initialize(name,id)
   @id = id
 end
 
-
-
-
-
-
 end #class end
