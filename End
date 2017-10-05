@@ -1,0 +1,24 @@
+[33mcommit fae90a505194b17df12c5b1115cb7364b759a486[m
+Author: Peter Brandon <peterkbrandon@gmail.com>
+Date:   Wed Oct 4 22:44:59 2017 -0400
+
+    Add initial file structure
+
+[33mcommit 4f86a0a15bf1a13dc7ce68250555c9afba16fd75[m
+Merge: c1948cd fafcd2d
+Author: Peter Brandon <peterkbrandon@gmail.com>
+Date:   Wed Oct 4 21:11:12 2017 -0400
+
+    Merge branch 'master' of https://github.com/pkb4112/chess
+
+[33mcommit c1948cdb56b98150e53920f9d4ac0812a1424afe[m
+Author: Peter Brandon <peterkbrandon@gmail.com>
+Date:   Wed Oct 4 21:08:57 2017 -0400
+
+    first commit
+
+[33mcommit fafcd2d155e4cf5e2d1fb795641f1efb1b840a2f[m
+Author: Peter Brandon <peterkbrandon@gmail.com>
+Date:   Wed Oct 4 21:08:57 2017 -0400
+
+    first commit
