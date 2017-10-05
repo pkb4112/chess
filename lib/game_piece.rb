@@ -1,10 +1,19 @@
+require_relative "game_board"
+
 class GamePiece
   attr_reader :player_ID, :piece_ID, :moves, :special_moves, :display
 
-  def verify_move()
-    #if move is in @moves, you can move. Also, over write special cases for certain pieces. 
+  def verify_move(target_square,active_piece,active_square)
+    #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
+  
   end
 
+def path_difference(target_square,active_square)
+  row_dif = target_square[1] - active_square[1]   #positive up
+  col_dif = target_square[0] - active_square[0]   # positive right
+  dif = [col_dif,row_dif]
+  return dif
+end
     
   #Type of piece
   #ID number of each piece
@@ -60,7 +69,11 @@ class Rook < GamePiece
     case player_ID 
     when 1  #white
       @display = "\u2656"
-      @moves = { 
+      @moves = {
+        up: [[+1,0],[+2,0],[+3,0],[+4,0],[+5,0],[+6,0],[+7,0]],
+        #down:
+        #left:
+        #right:
         
       }
 
@@ -220,11 +233,10 @@ end #King End
 class Square < GamePiece
 
   def initialize
-    @player_ID = 0 
     @display = "\u25A2"
   end
 
-end
+end #Square end
 
 
 

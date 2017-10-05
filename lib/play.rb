@@ -3,24 +3,30 @@ require_relative "game_board"
 require_relative "game_piece"
 
 
-
 def get_input(player_ID,gameboard)
+  begin
+    puts "Player #{player_ID}: Please input the location of the piece you would like to move (ex. 'a3'), or enter 'Save' to save and exit"
+    input = gets.chomp
+    letter = input.match(/(^[a-zA-Z])/)[0].downcase
+    col = letter_to_col(letter)
+    row = input.match(/(\d$)/)[0].to_i
+    square = [col,row]
+    return square
+  rescue
+    puts "Invalid Input!"
+    puts ""
+  end
+end
+
+def verify_input(player_ID,gameboard)
   square = false
   until gameboard.ownership?(square,player_ID) 
     until valid_location?(square)
-      begin
-        puts "Player #{player_ID}: Please input the location of the piece you would like to move (ex. 'a3'), or enter 'Save' to save and exit"
-        input = gets.chomp
-        letter = input.match(/(^[a-zA-Z])/)[0].downcase
-        col = letter_to_col(letter)
-        row = input.match(/(\d$)/)[0].to_i
-        square = [col,row]
-      rescue
-        puts "Invalid Input!"
-        puts ""
-      end
+      square = get_input(player_ID,gameboard)
     end
   if gameboard.ownership?(square,player_ID)
+    col = square[0]
+    row = square[1]
     return gameboard.squares[row][col]
   else
     puts ""
@@ -28,7 +34,6 @@ def get_input(player_ID,gameboard)
     puts ""
     square = false
   end
-
   end
 end
 
@@ -46,7 +51,6 @@ def letter_to_col(letter)
     return 99
   end
 end
-
 
 def valid_location?(square)
 
@@ -88,7 +92,7 @@ player = 1
 until turns == 5  #win?
   chessboard.print_board
   puts ""
-  square = get_input(player,chessboard)
+  square = verify_input(player,chessboard)
   puts square
   sleep(1)
 
