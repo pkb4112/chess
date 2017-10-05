@@ -217,5 +217,14 @@ class King < GamePiece
 
 end #King End
 
+class Square < GamePiece
+
+  def initialize
+    @player_ID = 0 
+    @display = "\u25A2"
+  end
+
+end
+
 
 

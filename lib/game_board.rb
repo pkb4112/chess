@@ -3,7 +3,7 @@ require_relative "player"
 
 
 class GameBoard
-  attr_accessor :squares
+  attr_reader :squares
 
   def initialize
     @squares = Array.new(8) {Array.new(8){Square.new}} #0-7
@@ -12,7 +12,6 @@ class GameBoard
 
 #Populates the board with game pieces in their starting locations
   def new_game
-  
     #Pawns 
     8.times do |i|
       @squares[1][i] = Pawn.new(1)
@@ -63,13 +62,22 @@ class GameBoard
     puts ""
   end
 
-end #GameBoard end
+  def ownership?(square,player_ID)
+    if square == false #For the first loop
+      return false
+    end
 
-class Square
-  attr_accessor :display
+    col = square[0]
+    row = square[1]
 
-  def initialize(display = "\u25A2")
-    @display = display
+    if @squares[row][col].instance_of? Square 
+      return false
+    elsif @squares[row][col].player_ID == player_ID
+      return true
+    else 
+      return false
+    end
   end
 
-end
+end #GameBoard end
+

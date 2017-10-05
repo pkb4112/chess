@@ -4,9 +4,9 @@ require_relative "game_piece"
 
 
 
-def get_input(player_ID)
+def get_input(player_ID,gameboard)
   square = false
-  until ownership?(square) 
+  until gameboard.ownership?(square,player_ID) 
     until valid_location?(square)
       begin
         puts "Player #{player_ID}: Please input the location of the piece you would like to move (ex. 'a3'), or enter 'Save' to save and exit"
@@ -20,10 +20,12 @@ def get_input(player_ID)
         puts ""
       end
     end
-  if ownership?(square)
-    return square
+  if gameboard.ownership?(square,player_ID)
+    return gameboard.squares[row][col]
   else
+    puts ""
     puts "That's Not Your Piece! Try Again!"
+    puts ""
     square = false
   end
 
@@ -42,14 +44,6 @@ def letter_to_col(letter)
   when 'h' then return 7
   else
     return 99
-  end
-end
-
-def ownership?(square)
-  if square == false
-    return false
-  else
-    return true
   end
 end
 
@@ -94,7 +88,7 @@ player = 1
 until turns == 5  #win?
   chessboard.print_board
   puts ""
-  square = get_input(player)
+  square = get_input(player,chessboard)
   puts square
   sleep(1)
 
