@@ -10,7 +10,7 @@ def get_input
       letter = input.match(/(^[a-zA-Z])/)[0].downcase
       col = letter_to_col(letter)
       row = input.match(/(\d$)/)[0].to_i
-      square = [col,row]
+      square = [row,col] #changed from col,row to row,col may break stuff
       return square
     rescue
       puts "Invalid Input!"
@@ -36,7 +36,7 @@ def verify_input(player_ID,gameboard)
       square = select_a_piece(player_ID,gameboard)
     end
   if gameboard.ownership?(square,player_ID)
-    return gameboard.coord_to_piece(square)
+    return square
   else
     puts ""
     puts "That's Not Your Piece! Try Again!"
@@ -46,7 +46,15 @@ def verify_input(player_ID,gameboard)
   end
 end
 
-def verify_target(target)
+
+def verify_target(active_square,gameboard,player_ID)
+  piece = gameboard.coord_to_piece(active_square)
+  target_square = get_target(player_ID,gameboard)
+  until piece.valid_move?(target_square,active_square,gameboard)
+   puts "Try Again!"
+   puts " "
+   target_square = get_target(player_ID,gameboard)
+  end
 end
 
 def letter_to_col(letter)
@@ -104,8 +112,11 @@ player = 1
 until turns == 5  #win?
   chessboard.print_board
   puts ""
-  piece = verify_input(player,chessboard)
-  target = get_target(player,chessboard)
+  active_square = verify_input(player,chessboard) 
+  p active_square
+  verify_target(active_square,chessboard,player)
+  puts "yay!"
+  
 
   
   sleep(1)

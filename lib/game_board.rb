@@ -80,12 +80,12 @@ class GameBoard
   end
 
   def coord_to_piece(square)
-    piece = @squares[square[0],square[1]]
+    piece = @squares[square[0]][square[1]]
     return piece
   end
 
   def update_at_coord(new_piece,square)
-    @squares[square[0],square[1]] = new_piece
+    @squares[square[0]][square[1]] = new_piece
   end
 
   def attack(target_square,active_square)

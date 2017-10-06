@@ -5,7 +5,12 @@ class GamePiece
 
   def valid_move?(target_square,active_square,gameboard)
     #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
-  return false unless is_possible?(target_square,active_square)
+  unless is_possible?(target_square,active_square)
+    puts "Move not possible!"
+    return false
+  else
+    return true
+  end
   end
 
   def check_target(target_square,gameboard)
@@ -92,20 +97,8 @@ class GamePiece
    return "clear"
   end
 
-  def get_target(player_ID,gameboard)
-  begin
-    puts "Player #{player_ID}: Please input the location you would like to move to (ex. 'a3')"
-    input = gets.chomp
-    letter = input.match(/(^[a-zA-Z])/)[0].downcase
-    col = letter_to_col(letter)
-    row = input.match(/(\d$)/)[0].to_i
-    square = [col,row]
-    return square
-  rescue
-    puts "Invalid Input!"
-    puts ""
-  end
-  end
+
+  
 
 
   #Type of piece
@@ -194,7 +187,6 @@ class Rook < GamePiece
     end
   end
 
-
 end #Rook end
 
 class Bishop <GamePiece
@@ -237,6 +229,7 @@ class Bishop <GamePiece
 
     end
   end
+
 end#Bishop End
 
 class Knight < GamePiece
@@ -276,13 +269,18 @@ class Knight < GamePiece
 
   def valid_move?(target_square,active_square,gameboard)
     #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
-    super
-    target = check_target(target_square,active_square,gameboard)
+    unless super
+      return false
+    end
+    target = self.check_target(target_square,gameboard)
     case target
     when "clear" then gameboard.move(target_square,active_square)
-    when "friendly" then puts "You can't move onto your own piece!"
+    when "friendly" then 
+      puts "You can't move onto your own piece!"
+      return false
     when "enemy" then gameboard.attack(target_square,active_square)
     end 
+    return true
   end
 
 end #Knight end
