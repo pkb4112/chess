@@ -86,18 +86,41 @@ class GamePiece
     path.select!{|x| !(x.instance_of? Square)} #Get rid of the squares
     unless path.empty? # If there's nothing in the way, path is clear. 
       obstacle = path.first
-        if x.player_ID == player_ID
-          puts "There is a piece from your own team in the way."
+        if obstacle.player_ID == player_ID  
           return "friendly"
         else
-          puts "There is an enemy piece in the way of your path."
           return "enemy"
         end
     end
    return "clear"
   end
 
-
+  def target_move(target_square,active_square,gameboard)
+    target = self.check_target(target_square,gameboard)
+    case target
+    when "clear" then gameboard.move(target_square,active_square)
+    when "friendly" then 
+      puts "You can't move onto your own piece!"
+      return false
+    when "enemy" then gameboard.attack(target_square,active_square)
+    end 
+    return true
+  end
+  
+  def path_move(target_square,active_square,gameboard)
+    path = self.check_path(target_square,active_square,gameboard)
+    case path
+    when "clear" 
+      return true
+    when "friendly"
+      puts "There is a piece from your own team in the way."
+      return false
+    when "enemy" 
+      puts "There is an enemy piece in the way of your path."
+      return false
+    end 
+    return true
+  end
   
 
 
@@ -187,6 +210,17 @@ class Rook < GamePiece
     end
   end
 
+  def valid_move?(target_square,active_square,gameboard)
+    #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
+    unless super
+      return false
+    end
+    unless path_move(target_square,active_square,gameboard)
+      return false
+    end
+    return target_move(target_square,active_square,gameboard)
+  end
+
 end #Rook end
 
 class Bishop <GamePiece
@@ -228,6 +262,17 @@ class Bishop <GamePiece
       }
 
     end
+  end
+
+  def valid_move?(target_square,active_square,gameboard)
+  #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
+  unless super
+    return false
+  end
+  unless path_move(target_square,active_square,gameboard)
+    return false
+  end
+  return target_move(target_square,active_square,gameboard)
   end
 
 end#Bishop End
@@ -272,15 +317,7 @@ class Knight < GamePiece
     unless super
       return false
     end
-    target = self.check_target(target_square,gameboard)
-    case target
-    when "clear" then gameboard.move(target_square,active_square)
-    when "friendly" then 
-      puts "You can't move onto your own piece!"
-      return false
-    when "enemy" then gameboard.attack(target_square,active_square)
-    end 
-    return true
+   return target_move(target_square,active_square,gameboard)
   end
 
 end #Knight end

@@ -51,6 +51,7 @@ def verify_target(active_square,gameboard,player_ID)
   piece = gameboard.coord_to_piece(active_square)
   target_square = get_target(player_ID,gameboard)
   until piece.valid_move?(target_square,active_square,gameboard)
+  puts""
    puts "Try Again!"
    puts " "
    target_square = get_target(player_ID,gameboard)

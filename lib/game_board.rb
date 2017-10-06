@@ -67,8 +67,9 @@ class GameBoard
       return false
     end
 
-    col = square[0]
-    row = square[1]
+    row = square[0]
+    col = square[1]
+   
 
     if @squares[row][col].instance_of? Square 
       return false

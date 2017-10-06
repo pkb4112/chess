@@ -58,8 +58,6 @@ describe "GamePiece" do
     end 
   end
 end
-
-
 end
 
 describe "GameBoard" do 
@@ -74,6 +72,13 @@ describe "GameBoard" do
       end
       it "Returns a Knight instance if given [0,1]" do 
         expect(chessboard.coord_to_piece([7,1])).to be_instance_of(Knight)
+      end
+    end
+  end
+  describe "#ownership?" do 
+    context "Given a square make sure the player ID of the player matches player ID of the piece" do
+      it "Returns true if player selects the Knight at [7,1]" do
+        expect(chessboard.ownership?([7,1],2)).to eql(true)
       end
     end
   end
