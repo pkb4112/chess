@@ -79,5 +79,26 @@ class GameBoard
     end
   end
 
+  def coord_to_piece(square)
+    piece = @squares[square[0],square[1]]
+    return piece
+  end
+
+  def update_at_coord(new_piece,square)
+    @squares[square[0],square[1]] = new_piece
+  end
+
+  def attack(target_square,active_square)
+    current_piece = coord_to_piece(active_square)
+    taken_piece = coord_to_piece(target_square)
+    update_at_coord(current_piece,target_square) #Check to make sure this doesn't cause reference issues
+    return taken_piece
+  end
+
+  def move (target_square,active_square)
+    current_piece = coord_to_piece(active_square)
+    update_at_coord(current_piece,target_square) #Check to make sure this doesn't cause reference issues
+    update_at_coord(Square.new,active_square)
+  end
 end #GameBoard end
 

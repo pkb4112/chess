@@ -3,31 +3,40 @@ require_relative "game_board"
 require_relative "game_piece"
 
 
-def get_input(player_ID,gameboard)
-  begin
-    puts "Player #{player_ID}: Please input the location of the piece you would like to move (ex. 'a3'), or enter 'Save' to save and exit"
-    input = gets.chomp
-    letter = input.match(/(^[a-zA-Z])/)[0].downcase
-    col = letter_to_col(letter)
-    row = input.match(/(\d$)/)[0].to_i
-    square = [col,row]
-    return square
-  rescue
-    puts "Invalid Input!"
-    puts ""
+def get_input
+  loop do
+    begin
+      input = gets.chomp
+      letter = input.match(/(^[a-zA-Z])/)[0].downcase
+      col = letter_to_col(letter)
+      row = input.match(/(\d$)/)[0].to_i
+      square = [col,row]
+      return square
+    rescue
+      puts "Invalid Input!"
+      puts ""
+    end
   end
+end
+
+def select_a_piece(player_ID,gameboard)
+    puts "Player #{player_ID}: Please input the location of the piece you would like to move (ex. 'a3'), or enter 'Save' to save and exit"
+    return get_input
+end
+
+def get_target(player_ID,gameboard)
+    puts "Player #{player_ID}: Please input the location you would like to move to (ex. 'a3')"
+    return get_input
 end
 
 def verify_input(player_ID,gameboard)
   square = false
   until gameboard.ownership?(square,player_ID) 
     until valid_location?(square)
-      square = get_input(player_ID,gameboard)
+      square = select_a_piece(player_ID,gameboard)
     end
   if gameboard.ownership?(square,player_ID)
-    col = square[0]
-    row = square[1]
-    return gameboard.squares[row][col]
+    return gameboard.coord_to_piece(square)
   else
     puts ""
     puts "That's Not Your Piece! Try Again!"
@@ -35,6 +44,9 @@ def verify_input(player_ID,gameboard)
     square = false
   end
   end
+end
+
+def verify_target(target)
 end
 
 def letter_to_col(letter)
@@ -92,8 +104,10 @@ player = 1
 until turns == 5  #win?
   chessboard.print_board
   puts ""
-  square = verify_input(player,chessboard)
-  puts square
+  piece = verify_input(player,chessboard)
+  target = get_target(player,chessboard)
+
+  
   sleep(1)
 
   if player == 1
