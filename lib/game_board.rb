@@ -10,7 +10,7 @@ class GameBoard
     new_game
   end
 
-#Populates the board with game pieces in their starting locations
+  #Populates the board with game pieces in their starting locations
   def new_game
     #Pawns 
     8.times do |i|
@@ -62,6 +62,35 @@ class GameBoard
     puts ""
   end
 
+  def pieces_with_index
+    pieces = Hash.new
+    @squares.each_with_index do |x,row|
+      x.each_with_index do |piece,col|
+          #If this piece can possibly move to the opossing king, return true
+          pieces[piece]=[row,col]
+        end
+      end
+    return pieces
+  end
+
+  def kings_with_index
+    pieces = pieces_with_index
+    kings = pieces.select{|x| x.instance_of? King}
+    return kings
+  end
+
+  def in_check?
+    #Check all pieces on the board, and if they can access the opposing king, check.
+    pieces = pieces_with_index
+    kings = kings_with_index
+
+    pieces.each do |i|
+     return [true,i.player_ID] if i.in_check_pos?(kings.values[0],pieces[i],self) #King 1
+     return [true,i.player_ID] if i.in_check_pos?(kings.values[1],pieces[i],self) #King 2
+    end
+    return [false]
+  end
+
   def ownership?(square,player_ID)
     if square == false #For the first loop
       return false
@@ -102,6 +131,6 @@ class GameBoard
     update_at_coord(current_piece,target_square) #Check to make sure this doesn't cause reference issues
     update_at_coord(Square.new,active_square)
   end
-  
+
 end #GameBoard end
 

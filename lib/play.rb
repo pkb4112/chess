@@ -110,11 +110,12 @@ chessboard = GameBoard.new
 turns = 0
 player = 1
 
-until turns == 5  #win?
+until turns == 10  #win?
   chessboard.print_board
   puts ""
+  chessboard.in_check?
+  puts ""
   active_square = verify_input(player,chessboard) 
-  p active_square
   verify_target(active_square,chessboard,player)
   puts "yay!"
   

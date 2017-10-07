@@ -5,12 +5,14 @@ class GamePiece
 
   def valid_move?(target_square,active_square,gameboard)
     #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
-    unless is_possible?(target_square,active_square,gameboard)
+    if  !(is_possible?(target_square,active_square,gameboard))
       puts "Move not possible!"
-      return false
+      return false 
     else
       return true
     end
+
+    
   end
 
   def check_target(target_square,gameboard)
@@ -119,13 +121,20 @@ class GamePiece
     end 
     return true
   end
-  
-  #Type of piece
-  #ID number of each piece
-  #possible moves
-  #which player it belongs to
-  #maybe keeps track of its own location?
 
+  def in_check_pos?(target_square,active_square,gameboard)
+    unless is_possible?(target_square,active_square,gameboard)
+      return false
+    end
+    if check_target(target_square,gameboard) == "enemy"
+      return true
+    end
+    return false
+  end
+
+
+
+  
 end # GamePiece class end
 
 class Pawn < GamePiece
@@ -208,8 +217,11 @@ class Pawn < GamePiece
     unless is_possible?(target_square,active_square,gameboard)
       return false
     end
-   return target_move(target_square,active_square,gameboard)
+   target_move(target_square,active_square,gameboard)
+
   end
+
+
 
 end #Pawn end
 
@@ -263,6 +275,14 @@ class Rook < GamePiece
     return target_move(target_square,active_square,gameboard)
   end
 
+  def in_check_pos?(target_square,active_square,gameboard) 
+    if check_path(target_square,active_square,gameboard) == "clear" && super
+      return true
+    else
+      return false
+    end
+  end
+
 end #Rook end
 
 class Bishop <GamePiece
@@ -307,17 +327,25 @@ class Bishop <GamePiece
   end
 
   def valid_move?(target_square,active_square,gameboard)
-  #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
-  unless super
-    return false
-  end
-  unless path_move(target_square,active_square,gameboard)
-    return false
-  end
-  return target_move(target_square,active_square,gameboard)
+    #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
+    unless super
+      return false
+    end
+    unless path_move(target_square,active_square,gameboard)
+      return false
+    end
+    return target_move(target_square,active_square,gameboard)
   end
 
-end#Bishop End
+  def in_check_pos?(target_square,active_square,gameboard) 
+    if check_path(target_square,active_square,gameboard) == "clear" && super
+      return true
+    else
+      return false
+    end
+  end
+
+end #Bishop End
 
 class Knight < GamePiece
   def initialize(player_ID)
@@ -416,14 +444,21 @@ class Queen < GamePiece
   end
 
   def valid_move?(target_square,active_square,gameboard)
-  #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
-  unless super
-    return false
+    unless super
+      return false
+    end
+    unless path_move(target_square,active_square,gameboard)
+      return false
+    end
+    return target_move(target_square,active_square,gameboard)
   end
-  unless path_move(target_square,active_square,gameboard)
-    return false
-  end
-  return target_move(target_square,active_square,gameboard)
+
+  def in_check_pos?(target_square,active_square,gameboard) 
+    if check_path(target_square,active_square,gameboard) == "clear" && super
+      return true
+    else
+      return false
+    end
   end
 
 end #Queen End
