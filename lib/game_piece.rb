@@ -1,16 +1,16 @@
 require_relative "game_board"
 
 class GamePiece
-  attr_reader :player_ID, :piece_ID, :moves, :special_moves, :display
+  attr_reader :player_ID, :piece_ID, :moves, :special_moves, :starting_moves, :display
 
   def valid_move?(target_square,active_square,gameboard)
     #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
-  unless is_possible?(target_square,active_square)
-    puts "Move not possible!"
-    return false
-  else
-    return true
-  end
+    unless is_possible?(target_square,active_square,gameboard)
+      puts "Move not possible!"
+      return false
+    else
+      return true
+    end
   end
 
   def check_target(target_square,gameboard)
@@ -25,10 +25,9 @@ class GamePiece
     else
       return "enemy"
     end
-
   end
 
-  def is_possible?(target_square,active_square)
+  def is_possible?(target_square,active_square,gameboard)
     dif = path_difference(target_square,active_square)
     self.moves.each_value do |i|
       i.each do |x|
@@ -41,52 +40,51 @@ class GamePiece
   end
 
   def path_difference(target_square,active_square)
-    row_dif = (target_square[1] - active_square[1])  # positive up
-    col_dif = (target_square[0] - active_square[0]) # positive right
-    dif = [col_dif,row_dif]
+    row_dif = (target_square[0] - active_square[0])  # positive up
+    col_dif = (target_square[1] - active_square[1]) # positive right
+    dif = [row_dif,col_dif]
     return dif
   end
 
   def identify_path(target_square,active_square)
     dif = path_difference(target_square,active_square)
  
-    active_col = active_square[0]
-    active_row = active_square[1]
-    target_col = target_square[0]
-    target_row = target_square[1]
+    active_row = active_square[0]
+    active_col = active_square[1]
+    target_row = target_square[0]
+    target_col = target_square[1]
+    
 
-    if dif[0] > 0
-      col_path = *(active_col..target_col)
-    elsif dif[0] < 0
+    if dif[1] > 0 #Column difference
+      col_path = *(active_col..target_col) #Array of active column to target column
+    elsif dif[1] < 0
       col_path = *active_col.downto(target_col)
     else 
-      col_path = Array.new(dif[1].abs+1){0}  # No change in column, just add zeroes to zip
+      col_path = Array.new(dif[0].abs+1){active_col}  # No change in column, just add current col to zip
     end
     
-    if dif[1] > 0
+    if dif[0] > 0 #Row difference
       row_path = *(active_row..target_row)
-    elsif dif[1] < 0
+    elsif dif[0] < 0
       row_path = *active_row.downto(target_row)
     else 
-      row_path = Array.new(dif[0].abs+1){0} # No change in row, just add zeroes to zip
+      row_path = Array.new(dif[1].abs+1){active_row} # No change in row, just add current row  to zip
     end 
 
-    path = col_path.zip(row_path)
-
+    path = row_path.zip(col_path)
     return path
   end
 
   def check_path(target_square,active_square,gameboard)
     path = identify_path(target_square,active_square)
     path.shift
-    path.pop
     active_piece = self
     player_ID = self.player_ID
     path.map!{|x| gameboard.coord_to_piece(x)} #Convert the coordinates to the corresponding game piece
     path.select!{|x| !(x.instance_of? Square)} #Get rid of the squares
     unless path.empty? # If there's nothing in the way, path is clear. 
       obstacle = path.first
-        if obstacle.player_ID == player_ID  
+        if obstacle.player_ID == player_ID 
           return "friendly"
         else
           return "enemy"
@@ -108,7 +106,7 @@ class GamePiece
   end
   
   def path_move(target_square,active_square,gameboard)
-    path = self.check_path(target_square,active_square,gameboard)
+    path = check_path(target_square,active_square,gameboard)
     case path
     when "clear" 
       return true
@@ -122,8 +120,6 @@ class GamePiece
     return true
   end
   
-
-
   #Type of piece
   #ID number of each piece
   #possible moves
@@ -133,9 +129,11 @@ class GamePiece
 end # GamePiece class end
 
 class Pawn < GamePiece
+  attr_accessor :starting_pos
 
   def initialize(player_ID)
     @player_ID = player_ID
+    @starting_pos = true
 
     case player_ID
     when 1  #white
@@ -149,6 +147,10 @@ class Pawn < GamePiece
 
         take_l: [+1,-1],
         take_r: [+1,+1],
+        
+      }
+
+      @starting_moves = {
         start: [+2,0]
       }
     
@@ -163,10 +165,50 @@ class Pawn < GamePiece
 
         take_l: [-1,-1],
         take_r: [-1,+1],
+        
+      }
+
+      @starting_moves = {
         start: [-2,0]
       }
 
     end
+  end
+
+  def is_possible?(target_square,active_square,gameboard)
+    dif = path_difference(target_square,active_square)
+    if @starting_pos == true
+      puts "here"
+      self.starting_moves.each_value do |i|
+        if dif == i 
+          @starting_pos = false
+          return true
+        end 
+      end
+    end
+    self.moves.each_value do |i|
+        if dif == i
+           @starting_pos = false
+          return true
+        end
+    end
+    if check_target(target_square,gameboard) == "enemy"
+      self.special_moves.each_value do |i|
+        if dif == i 
+           @starting_pos = false
+          return true
+        end
+      end
+    end
+    return false
+  end
+
+  def valid_move?(target_square,active_square,gameboard)
+    #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
+    unless is_possible?(target_square,active_square,gameboard)
+      return false
+    end
+   return target_move(target_square,active_square,gameboard)
   end
 
 end #Pawn end
@@ -322,7 +364,6 @@ class Knight < GamePiece
 
 end #Knight end
 
-
 class Queen < GamePiece
   def initialize(player_ID)
     @player_ID = player_ID
@@ -374,6 +415,17 @@ class Queen < GamePiece
     end
   end
 
+  def valid_move?(target_square,active_square,gameboard)
+  #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
+  unless super
+    return false
+  end
+  unless path_move(target_square,active_square,gameboard)
+    return false
+  end
+  return target_move(target_square,active_square,gameboard)
+  end
+
 end #Queen End
 
 class King < GamePiece
@@ -414,6 +466,14 @@ class King < GamePiece
       }
 
     end
+  end
+
+  def valid_move?(target_square,active_square,gameboard)
+    #if move is in @moves, you can move. Also, overwrite special cases for certain pieces.
+    unless super
+      return false
+    end
+   return target_move(target_square,active_square,gameboard)
   end
 
 end #King End

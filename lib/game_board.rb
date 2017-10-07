@@ -92,7 +92,8 @@ class GameBoard
   def attack(target_square,active_square)
     current_piece = coord_to_piece(active_square)
     taken_piece = coord_to_piece(target_square)
-    update_at_coord(current_piece,target_square) #Check to make sure this doesn't cause reference issues
+    update_at_coord(current_piece,target_square)#Check to make sure this doesn't cause reference issues
+    update_at_coord(Square.new,active_square) 
     return taken_piece
   end
 
@@ -101,5 +102,6 @@ class GameBoard
     update_at_coord(current_piece,target_square) #Check to make sure this doesn't cause reference issues
     update_at_coord(Square.new,active_square)
   end
+  
 end #GameBoard end
 
