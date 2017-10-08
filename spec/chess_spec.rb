@@ -6,23 +6,35 @@ require "player"
 describe "GamePiece" do 
   let(:rook) {Rook.new(1)}
   let(:knight) {Knight.new(1)}
+  let(:bishop) {Bishop.new(1)}
+  let(:king) {King.new(1)}
+  let(:pawn) {Pawn.new(1)}
   let(:chessboard){GameBoard.new}
   describe "#is_possible?" do
-    context ".is_possible?" do 
-      it "Returns true if the propsed move is included in piece possible moves" do
-        expect(rook.is_possible?([5,0],[0,0])).to eql(true)
+    context "Given a target square" do 
+       it "Returns true Rook from 0,0 to 5,0" do
+        expect(rook.is_possible?([5,0],[0,0],chessboard)).to eql(true)
         end
         it "Returns false if the propsed move is not included in piece possible moves" do
-        expect(rook.is_possible?([5,3],[0,0])).to eql(false)
+        expect(rook.is_possible?([5,3],[0,0],chessboard)).to eql(false)
         end
         it "Returns false if the proposed move is the same spot as the active square" do
-          expect(rook.is_possible?([0,0],[0,0])).to eql(false)
+          expect(rook.is_possible?([0,0],[0,0],chessboard)).to eql(false)
         end
-        it "Returns false if the propsed move is not included in piece possible moves" do
-          expect(knight.is_possible?([2,1],[0,1])).to eql(false)
+        it "Returns false if the proposed move is not included in piece possible moves" do
+          expect(knight.is_possible?([2,1],[0,1],chessboard)).to eql(false)
         end
-        it "Returns true if the propsed move is included in piece possible moves" do
-          expect(knight.is_possible?([2,0],[0,1])).to eql(true)
+        it "Returns false if the proposed move is not included in piece possible moves" do
+          expect(bishop.is_possible?([0,4],[7,2],chessboard)).to eql(false)
+        end
+        it "Returns true if the proposed move is included in piece possible moves" do
+          expect(knight.is_possible?([2,0],[0,1],chessboard)).to eql(true)
+        end
+        it "Returns true if the proposed move is included in piece possible moves" do
+          expect(king.is_possible?([1,4],[0,4],chessboard)).to eql(true)
+        end
+        it "Returns true if the proposed move is included in piece possible moves" do
+          expect(pawn.is_possible?([2,4],[1,4],chessboard)).to eql(true)
         end
     end
   end
@@ -47,6 +59,13 @@ describe "GamePiece" do
     context "Checks a square and returns if the target is 'clear', 'friendly', or 'enemy'" do
       it "Returns clear if the space is clear" do
         expect(knight.check_target([2,0],chessboard)).to eql("clear")
+      end
+    end
+  end
+  describe ".check_path" do 
+    context do "Given a target make sure the path is clear"
+      it "Returns false for a rook trying to move on a starting gameboard" do
+        expect(rook.check_path([5,0],[0,0],chessboard)).to eql("friendly")
       end
     end
   end

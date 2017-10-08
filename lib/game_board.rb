@@ -1,3 +1,4 @@
+require 'yaml'
 require_relative "game_piece"
 require_relative "player"
 
@@ -47,6 +48,18 @@ class GameBoard
     @squares[7][4] = King.new(2)
   end
 
+  def save
+    data = @squares
+    File.open('store.yml','w') do |f|
+      f.write(data.to_yaml)
+    end
+  end
+
+  def load
+    data = YAML.load_file('store.yml')
+    @squares = data
+  end
+
   def print_board
     system "clear"
     8.times do |i|
@@ -84,11 +97,13 @@ class GameBoard
     pieces = pieces_with_index
     kings = kings_with_index
 
-    pieces.each do |i|
-     return [true,i.player_ID] if i.in_check_pos?(kings.values[0],pieces[i],self) #King 1
-     return [true,i.player_ID] if i.in_check_pos?(kings.values[1],pieces[i],self) #King 2
+    pieces.each_key do |i|
+     unless i.instance_of? Square
+       return [true,i.player_ID] if i.in_check_pos?(kings.values[0],pieces[i],self) #King 2
+       return [true,i.player_ID] if i.in_check_pos?(kings.values[1],pieces[i],self) #King 2
+      end
     end
-    return [false]
+    return false
   end
 
   def ownership?(square,player_ID)

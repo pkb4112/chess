@@ -11,18 +11,14 @@ class GamePiece
     else
       return true
     end
-
-    
   end
 
   def check_target(target_square,gameboard)
     target_piece = gameboard.coord_to_piece(target_square)
     player_ID = self.player_ID
-
     if target_piece.instance_of? Square
       return "clear"
     elsif target_piece.player_ID == player_ID 
-      puts "Your own piece is on that square already"
       return "friendly"
     else
       return "enemy"
@@ -33,11 +29,14 @@ class GamePiece
     dif = path_difference(target_square,active_square)
     self.moves.each_value do |i|
       i.each do |x|
+        
         if dif == x 
+         
           return true
         end
       end
     end
+    
     return false
   end
 
@@ -80,6 +79,7 @@ class GamePiece
   def check_path(target_square,active_square,gameboard)
     path = identify_path(target_square,active_square)
     path.shift
+    path.pop
     active_piece = self
     player_ID = self.player_ID
     path.map!{|x| gameboard.coord_to_piece(x)} #Convert the coordinates to the corresponding game piece
@@ -123,18 +123,14 @@ class GamePiece
   end
 
   def in_check_pos?(target_square,active_square,gameboard)
-    unless is_possible?(target_square,active_square,gameboard)
-      return false
-    end
+    return false unless is_possible?(target_square,active_square,gameboard)
     if check_target(target_square,gameboard) == "enemy"
       return true
-    end
+    else
     return false
+    end
   end
 
-
-
-  
 end # GamePiece class end
 
 class Pawn < GamePiece
@@ -187,7 +183,6 @@ class Pawn < GamePiece
   def is_possible?(target_square,active_square,gameboard)
     dif = path_difference(target_square,active_square)
     if @starting_pos == true
-      puts "here"
       self.starting_moves.each_value do |i|
         if dif == i 
           @starting_pos = false
@@ -220,8 +215,6 @@ class Pawn < GamePiece
    target_move(target_square,active_square,gameboard)
 
   end
-
-
 
 end #Pawn end
 
@@ -276,7 +269,7 @@ class Rook < GamePiece
   end
 
   def in_check_pos?(target_square,active_square,gameboard) 
-    if check_path(target_square,active_square,gameboard) == "clear" && super
+    if super && check_path(target_square,active_square,gameboard) == "clear" 
       return true
     else
       return false
@@ -338,7 +331,7 @@ class Bishop <GamePiece
   end
 
   def in_check_pos?(target_square,active_square,gameboard) 
-    if check_path(target_square,active_square,gameboard) == "clear" && super
+    if super && check_path(target_square,active_square,gameboard) == "clear" 
       return true
     else
       return false
@@ -454,7 +447,7 @@ class Queen < GamePiece
   end
 
   def in_check_pos?(target_square,active_square,gameboard) 
-    if check_path(target_square,active_square,gameboard) == "clear" && super
+    if super && check_path(target_square,active_square,gameboard) == "clear" 
       return true
     else
       return false
@@ -472,10 +465,10 @@ class King < GamePiece
       @display = "\u2654"
       @moves = { 
 
-        up:[+1,0],
-        down: [-1,0],
-        left: [0,-1],
-        right: [0,+1]
+        up: [[+1,0]],
+        down: [[-1,0]],
+        left: [[0,-1]],
+        right: [[0,+1]]
 
       }
 
@@ -489,10 +482,10 @@ class King < GamePiece
 
       @moves = { 
         
-        up:[+1,0],
-        down: [-1,0],
-        left: [0,-1],
-        right: [0,+1]
+        up: [[+1,0]],
+        down: [[-1,0]],
+        left: [[0,-1]],
+        right: [[0,+1]]
       }
 
       @special_moves = {
