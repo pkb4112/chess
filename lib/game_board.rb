@@ -103,7 +103,7 @@ class GameBoard
        return [true,i.player_ID] if i.in_check_pos?(kings.values[1],pieces[i],self) #King 2
       end
     end
-    return false
+    return [false,0]
   end
 
   def ownership?(square,player_ID)
@@ -135,17 +135,28 @@ class GameBoard
 
   def attack(target_square,active_square)
     current_piece = coord_to_piece(active_square)
-    taken_piece = coord_to_piece(target_square)
+    old_piece = coord_to_piece(target_square)
     update_at_coord(current_piece,target_square)#Check to make sure this doesn't cause reference issues
     update_at_coord(Square.new,active_square) 
-    return taken_piece
+    return expose_to_check?(current_piece,old_piece,target_square,active_square)
+  end
+
+  def expose_to_check?(current_piece,old_piece,target_square,active_square)
+    if in_check?[0] && in_check?[1]!=current_piece.player_ID
+      puts "Cannot expose your king to check"
+      update_at_coord(old_piece,target_square)
+      update_at_coord(current_piece,active_square)
+      return false
+    end
+    return true
   end
 
   def move (target_square,active_square)
     current_piece = coord_to_piece(active_square)
+    old_piece = coord_to_piece(target_square)
     update_at_coord(current_piece,target_square) #Check to make sure this doesn't cause reference issues
     update_at_coord(Square.new,active_square)
+    return expose_to_check?(current_piece,old_piece,target_square,active_square)
   end
-
 end #GameBoard end
 

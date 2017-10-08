@@ -98,13 +98,14 @@ class GamePiece
   def target_move(target_square,active_square,gameboard)
     target = self.check_target(target_square,gameboard)
     case target
-    when "clear" then gameboard.move(target_square,active_square)
+    when "clear" then 
+    return gameboard.move(target_square,active_square)
     when "friendly" then 
       puts "You can't move onto your own piece!"
       return false
-    when "enemy" then gameboard.attack(target_square,active_square)
+    when "enemy" then 
+    return gameboard.attack(target_square,active_square)
     end 
-    return true
   end
   
   def path_move(target_square,active_square,gameboard)

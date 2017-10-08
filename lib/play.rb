@@ -16,6 +16,8 @@ def get_input(player_ID,gameboard)
         gameboard.print_board
         puts "Player #{player_ID}: Please input the location of the piece you would like to move (ex. 'a3')"
         input = gets.chomp
+      elsif input == "retry"
+        return false
       end
         letter = input.match(/(^[a-zA-Z])/)[0].downcase
         col = letter_to_col(letter)
@@ -62,12 +64,19 @@ end
 def verify_target(active_square,gameboard,player_ID)
   piece = gameboard.coord_to_piece(active_square)
   target_square = get_target(player_ID,gameboard)
-  until valid_location?(target_square) && piece.valid_move?(target_square,active_square,gameboard)
-  puts""
+  
+  until (valid_location?(target_square) && piece.valid_move?(target_square,active_square,gameboard)) || target_square == false
+   puts""
    puts "Try Again!"
-   puts " "
+   puts "or type 'retry' to select another piece"
+   puts ""
    target_square = get_target(player_ID,gameboard)
   end
+  if target_square == false
+    return false
+  else
+   return true
+ end
 end
 
 def letter_to_col(letter)
@@ -127,10 +136,13 @@ player = 1
 until turns == 10  #win?
   chessboard.print_board
   puts ""
-  puts "Check!" if chessboard.in_check?
+  puts "Check!" if chessboard.in_check?[0]
   puts ""
   active_square = verify_input(player,chessboard) 
-  verify_target(active_square,chessboard,player)
+  until verify_target(active_square,chessboard,player)
+    puts "insdie"
+    active_square = verify_input(player,chessboard) 
+  end
   puts "yay!"
   
 

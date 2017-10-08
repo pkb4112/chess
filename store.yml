@@ -1,69 +1,6 @@
 ---
-- - !ruby/object:Rook
-    player_ID: 1
-    display: "♖"
-    moves:
-      :up:
-      - - 1
-        - 0
-      - - 2
-        - 0
-      - - 3
-        - 0
-      - - 4
-        - 0
-      - - 5
-        - 0
-      - - 6
-        - 0
-      - - 7
-        - 0
-      :down:
-      - - -1
-        - 0
-      - - -2
-        - 0
-      - - -3
-        - 0
-      - - -4
-        - 0
-      - - -5
-        - 0
-      - - -6
-        - 0
-      - - -7
-        - 0
-      :left:
-      - - 0
-        - -1
-      - - 0
-        - -2
-      - - 0
-        - -3
-      - - 0
-        - -4
-      - - 0
-        - -5
-      - - 0
-        - -6
-      - - 0
-        - -7
-      :right:
-      - - 0
-        - 1
-      - - 0
-        - 2
-      - - 0
-        - 3
-      - - 0
-        - 4
-      - - 0
-        - 5
-      - - 0
-        - 6
-      - - 0
-        - 7
-    special_moves: {}
+- - !ruby/object:Square
+    display: "▢"
   - !ruby/object:Knight
     player_ID: 1
     display: "♘"
@@ -445,9 +382,223 @@
       - - 0
         - 7
     special_moves: {}
+- - !ruby/object:Rook
+    player_ID: 1
+    display: "♖"
+    moves:
+      :up:
+      - - 1
+        - 0
+      - - 2
+        - 0
+      - - 3
+        - 0
+      - - 4
+        - 0
+      - - 5
+        - 0
+      - - 6
+        - 0
+      - - 7
+        - 0
+      :down:
+      - - -1
+        - 0
+      - - -2
+        - 0
+      - - -3
+        - 0
+      - - -4
+        - 0
+      - - -5
+        - 0
+      - - -6
+        - 0
+      - - -7
+        - 0
+      :left:
+      - - 0
+        - -1
+      - - 0
+        - -2
+      - - 0
+        - -3
+      - - 0
+        - -4
+      - - 0
+        - -5
+      - - 0
+        - -6
+      - - 0
+        - -7
+      :right:
+      - - 0
+        - 1
+      - - 0
+        - 2
+      - - 0
+        - 3
+      - - 0
+        - 4
+      - - 0
+        - 5
+      - - 0
+        - 6
+      - - 0
+        - 7
+    special_moves: {}
+  - !ruby/object:Pawn
+    player_ID: 1
+    starting_pos: true
+    display: "♙"
+    moves:
+      :fwd:
+      - 1
+      - 0
+    special_moves:
+      :take_l:
+      - 1
+      - -1
+      :take_r:
+      - 1
+      - 1
+    starting_moves:
+      :start:
+      - 2
+      - 0
+  - !ruby/object:Pawn
+    player_ID: 1
+    starting_pos: true
+    display: "♙"
+    moves:
+      :fwd:
+      - 1
+      - 0
+    special_moves:
+      :take_l:
+      - 1
+      - -1
+      :take_r:
+      - 1
+      - 1
+    starting_moves:
+      :start:
+      - 2
+      - 0
+  - !ruby/object:Pawn
+    player_ID: 1
+    starting_pos: false
+    display: "♙"
+    moves:
+      :fwd:
+      - 1
+      - 0
+    special_moves:
+      :take_l:
+      - 1
+      - -1
+      :take_r:
+      - 1
+      - 1
+    starting_moves:
+      :start:
+      - 2
+      - 0
+  - !ruby/object:Pawn
+    player_ID: 1
+    starting_pos: true
+    display: "♙"
+    moves:
+      :fwd:
+      - 1
+      - 0
+    special_moves:
+      :take_l:
+      - 1
+      - -1
+      :take_r:
+      - 1
+      - 1
+    starting_moves:
+      :start:
+      - 2
+      - 0
+  - !ruby/object:Pawn
+    player_ID: 1
+    starting_pos: true
+    display: "♙"
+    moves:
+      :fwd:
+      - 1
+      - 0
+    special_moves:
+      :take_l:
+      - 1
+      - -1
+      :take_r:
+      - 1
+      - 1
+    starting_moves:
+      :start:
+      - 2
+      - 0
+  - !ruby/object:Pawn
+    player_ID: 1
+    starting_pos: true
+    display: "♙"
+    moves:
+      :fwd:
+      - 1
+      - 0
+    special_moves:
+      :take_l:
+      - 1
+      - -1
+      :take_r:
+      - 1
+      - 1
+    starting_moves:
+      :start:
+      - 2
+      - 0
+  - !ruby/object:Pawn
+    player_ID: 1
+    starting_pos: true
+    display: "♙"
+    moves:
+      :fwd:
+      - 1
+      - 0
+    special_moves:
+      :take_l:
+      - 1
+      - -1
+      :take_r:
+      - 1
+      - 1
+    starting_moves:
+      :start:
+      - 2
+      - 0
+- - !ruby/object:Square
+    display: "▢"
+  - !ruby/object:Square
+    display: "▢"
+  - !ruby/object:Square
+    display: "▢"
+  - !ruby/object:Square
+    display: "▢"
+  - !ruby/object:Square
+    display: "▢"
+  - !ruby/object:Square
+    display: "▢"
+  - !ruby/object:Square
+    display: "▢"
+  - !ruby/object:Square
+    display: "▢"
 - - !ruby/object:Pawn
     player_ID: 1
-    starting_pos: true
+    starting_pos: false
     display: "♙"
     moves:
       :fwd:
@@ -464,123 +615,6 @@
       :start:
       - 2
       - 0
-  - !ruby/object:Pawn
-    player_ID: 1
-    starting_pos: true
-    display: "♙"
-    moves:
-      :fwd:
-      - 1
-      - 0
-    special_moves:
-      :take_l:
-      - 1
-      - -1
-      :take_r:
-      - 1
-      - 1
-    starting_moves:
-      :start:
-      - 2
-      - 0
-  - !ruby/object:Pawn
-    player_ID: 1
-    starting_pos: true
-    display: "♙"
-    moves:
-      :fwd:
-      - 1
-      - 0
-    special_moves:
-      :take_l:
-      - 1
-      - -1
-      :take_r:
-      - 1
-      - 1
-    starting_moves:
-      :start:
-      - 2
-      - 0
-  - !ruby/object:Square
-    display: "▢"
-  - !ruby/object:Pawn
-    player_ID: 1
-    starting_pos: true
-    display: "♙"
-    moves:
-      :fwd:
-      - 1
-      - 0
-    special_moves:
-      :take_l:
-      - 1
-      - -1
-      :take_r:
-      - 1
-      - 1
-    starting_moves:
-      :start:
-      - 2
-      - 0
-  - !ruby/object:Pawn
-    player_ID: 1
-    starting_pos: true
-    display: "♙"
-    moves:
-      :fwd:
-      - 1
-      - 0
-    special_moves:
-      :take_l:
-      - 1
-      - -1
-      :take_r:
-      - 1
-      - 1
-    starting_moves:
-      :start:
-      - 2
-      - 0
-  - !ruby/object:Pawn
-    player_ID: 1
-    starting_pos: true
-    display: "♙"
-    moves:
-      :fwd:
-      - 1
-      - 0
-    special_moves:
-      :take_l:
-      - 1
-      - -1
-      :take_r:
-      - 1
-      - 1
-    starting_moves:
-      :start:
-      - 2
-      - 0
-  - !ruby/object:Square
-    display: "▢"
-- - !ruby/object:Square
-    display: "▢"
-  - !ruby/object:Square
-    display: "▢"
-  - !ruby/object:Square
-    display: "▢"
-  - !ruby/object:Square
-    display: "▢"
-  - !ruby/object:Square
-    display: "▢"
-  - !ruby/object:Square
-    display: "▢"
-  - !ruby/object:Square
-    display: "▢"
-  - !ruby/object:Square
-    display: "▢"
-- - !ruby/object:Square
-    display: "▢"
   - !ruby/object:Bishop
     player_ID: 2
     display: "♝"
@@ -648,50 +682,16 @@
     special_moves: {}
   - !ruby/object:Square
     display: "▢"
-  - !ruby/object:Pawn
-    player_ID: 1
-    starting_pos: false
-    display: "♙"
-    moves:
-      :fwd:
-      - 1
-      - 0
-    special_moves:
-      :take_l:
-      - 1
-      - -1
-      :take_r:
-      - 1
-      - 1
-    starting_moves:
-      :start:
-      - 2
-      - 0
   - !ruby/object:Square
     display: "▢"
   - !ruby/object:Square
     display: "▢"
   - !ruby/object:Square
     display: "▢"
-  - !ruby/object:Pawn
-    player_ID: 1
-    starting_pos: false
-    display: "♙"
-    moves:
-      :fwd:
-      - 1
-      - 0
-    special_moves:
-      :take_l:
-      - 1
-      - -1
-      :take_r:
-      - 1
-      - 1
-    starting_moves:
-      :start:
-      - 2
-      - 0
+  - !ruby/object:Square
+    display: "▢"
+  - !ruby/object:Square
+    display: "▢"
 - - !ruby/object:Square
     display: "▢"
   - !ruby/object:Square
