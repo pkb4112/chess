@@ -92,19 +92,41 @@ class GameBoard
     return kings
   end
 
+  def pieces_for_player(pieces,player_ID)
+    # Returns a hash containing all the pieces just for a certain player
+    player_pieces = pieces.select {|i,j| i.player_ID == player_ID} 
+    return player_pieces
+  end
+
+
   def in_check?
-    #Check all pieces on the board, and if they can access the opposing king, check.
+    #Check all pieces on the board, and if they can access the opposing king, the king is in check.
     pieces = pieces_with_index
     kings = kings_with_index
 
     pieces.each_key do |i|
      unless i.instance_of? Square
-       return [true,i.player_ID] if i.in_check_pos?(kings.values[0],pieces[i],self) #King 2
+       return [true,i.player_ID] if i.in_check_pos?(kings.values[0],pieces[i],self) #King 1
        return [true,i.player_ID] if i.in_check_pos?(kings.values[1],pieces[i],self) #King 2
       end
     end
     return [false,0]
   end
+
+=begin
+  def checkmate?(player_ID)
+    #Can any pieces be moved such that in_check? returns false
+    player_pieces = pieces_for_player(pieces_with_index,player_ID)
+    kings = kings_with_index
+
+    player_pieces.each_key do |piece|
+
+    end
+
+    return [false,0]
+  end
+=end
+
 
   def ownership?(square,player_ID)
     if square == false #For the first loop
@@ -143,7 +165,7 @@ class GameBoard
 
   def expose_to_check?(current_piece,old_piece,target_square,active_square)
     if in_check?[0] && in_check?[1]!=current_piece.player_ID
-      puts "Cannot expose your king to check"
+      puts "Cannot expose your king to check - Type 'surrender' for checkmate"
       update_at_coord(old_piece,target_square)
       update_at_coord(current_piece,active_square)
       return false

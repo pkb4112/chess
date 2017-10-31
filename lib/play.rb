@@ -18,6 +18,8 @@ def get_input(player_ID,gameboard)
         input = gets.chomp
       elsif input == "retry"
         return false
+      elsif input == "checkmate"
+        checkmate
       end
         letter = input.match(/(^[a-zA-Z])/)[0].downcase
         col = letter_to_col(letter)
@@ -35,11 +37,17 @@ def get_input(player_ID,gameboard)
 end
 
 def select_a_piece(player_ID,gameboard)
+    sleep(1)
+    system "clear"
+    gameboard.print_board
     puts "Player #{player_ID}: Please input the location of the piece you would like to move (ex. 'a3'), or enter 'Save' to save and exit"
     return get_input(player_ID,gameboard)
 end
 
 def get_target(player_ID,gameboard)
+    sleep(1)
+    system "clear"
+    gameboard.print_board
     puts "Player #{player_ID}: Please input the location you would like to move to (ex. 'a3')"
     return get_input(player_ID,gameboard)
 end
@@ -107,15 +115,18 @@ def valid_location?(square)
   if col.between?(0,7) && row.between?(0,7)
     return true
   else
-    puts "" 
     puts "That location isn't even on the board!"
     puts "" 
   end
 end
 
-
-
-
+def checkmate
+  system "clear"
+  puts "Checkmate!" 
+  puts "Game Over"
+  sleep(1)
+  exit
+end
 
 =begin
 puts "What is Player 1's Name?"
@@ -133,27 +144,22 @@ chessboard = GameBoard.new
 turns = 0
 player = 1
 
-until turns == 10  #win?
+loop do
   chessboard.print_board
   puts ""
   puts "Check!" if chessboard.in_check?[0]
   puts ""
   active_square = verify_input(player,chessboard) 
   until verify_target(active_square,chessboard,player)
-    puts "insdie"
     active_square = verify_input(player,chessboard) 
   end
   puts "yay!"
   
-
+ if player == 1
+  player = 2
+else 
+  player = 1
+end
   
   sleep(1)
-
-  if player == 1
-    player = 2
-  else 
-    player = 1
-  end
-
-  turns +=1
 end
